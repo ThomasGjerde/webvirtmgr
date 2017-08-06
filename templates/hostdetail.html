@@ -49,6 +49,10 @@
         </table>
 
         <h4>{% trans "Performance" %}</h4>
+        <p>Temperature</p>
+        <pre>
+        {{sensor_output}}
+        </pre>
         <p>{% trans "CPU usage" %}</p>
         <canvas id="cpuChart" width="700" height="200"></canvas>
         <p>{% trans "Memory usage" %}</p>
