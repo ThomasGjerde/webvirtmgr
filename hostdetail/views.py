@@ -131,9 +131,10 @@ def overview(request, host_id):
     try:
         for chip in sensors.iter_detected_chips():
             for feature in chip:
-                sensor_output += '  %s: %.2fC' % (feature.label, feature.get_value())
+                sensor_output += '%s: %.0fC' % (feature.label, feature.get_value()) + '\n'
     finally:
         sensors.cleanup()
+    sensor_output = sensor_output.strip()
 
 
     return render_to_response('hostdetail.html', locals(), context_instance=RequestContext(request))
