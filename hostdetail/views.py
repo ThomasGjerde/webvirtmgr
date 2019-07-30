@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 import json
 import time
+import sensors
 
 from servers.models import Compute
 from vrtManager.hostdetails import wvmHostDetails
@@ -124,5 +125,16 @@ def overview(request, host_id):
         conn.close()
     except libvirtError as err:
         errors.append(err)
+
+    sensors.init()
+    sensor_output = ""
+    try:
+        for chip in sensors.iter_detected_chips():
+            for feature in chip:
+                sensor_output += '%s: %.0fC' % (feature.label, feature.get_value()) + '\n'
+    finally:
+        sensors.cleanup()
+    sensor_output = sensor_output.strip()
+
 
     return render_to_response('hostdetail.html', locals(), context_instance=RequestContext(request))
